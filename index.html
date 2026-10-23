@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartSleep | AI Sleep Health & Circadian Optimization Platform</title>
+  <meta name="description" content="Intelligent sleep tracking, circadian rhythm optimization, 90-minute cycle calculator, and neuro-acoustic soundscapes powered by Java 21.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23818cf8'><path d='M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z'/></svg>">
+</head>
+<body>
+  <!-- Ambient background glow effects -->
+  <div class="aurora-bg">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+    <div class="aurora-blob blob-3"></div>
+  </div>
+
+  <div id="app" class="app-layout">
+    <!-- Main Top Navigation -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-logo">
+          <div class="logo-icon-wrapper">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Smart<span class="gradient-text">Sleep</span></span>
+            <span class="brand-tagline">AI Circadian OS</span>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <button class="nav-tab active" data-tab="dashboard" id="tab-btn-dashboard">
+            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Dashboard
+          </button>
+          <button class="nav-tab" data-tab="calculator" id="tab-btn-calculator">
+            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Cycle Calculator
+          </button>
+          <button class="nav-tab" data-tab="soundscapes" id="tab-btn-soundscapes">
+            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+            Soundscapes
+          </button>
+          <button class="nav-tab" data-tab="environment" id="tab-btn-environment">
+            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+            Bedroom IoT
+          </button>
+          <button class="nav-tab" data-tab="circadian" id="tab-btn-circadian">
+            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path></svg>
+            Circadian Clock
+          </button>
+          <button class="nav-tab" data-tab="journal" id="tab-btn-journal">
+            <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            Sleep Log
+          </button>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="system-badge" id="java-status-badge">
+          <span class="pulse-dot"></span>
+          <span class="badge-text" id="server-status-text">Java Backend Live</span>
+        </div>
+        <button class="action-btn" id="btn-quick-log" title="Log tonight's sleep">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Quick Log
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="app-main">
+
+      <!-- =================================================================== -->
+      <!-- TAB 1: DASHBOARD -->
+      <!-- =================================================================== -->
+      <section id="section-dashboard" class="tab-section active">
+        <!-- Hero Summary Banner -->
+        <div class="hero-card glass-panel">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="sparkle-icon">✨</span> AI Sleep Recovery Analysis
+            </div>
+            <h1 class="hero-title">Sleep Performance: <span class="highlight-cyan" id="hero-grade">Optimal</span></h1>
+            <p class="hero-subtitle" id="hero-summary">
+              Your recovery scored <strong>88/100</strong> last night. Deep restorative sleep reached 1h 43m (22%), supporting full muscular recovery and neural waste clearance.
+            </p>
+            <div class="hero-quick-metrics">
+              <div class="metric-pill">
+                <span class="pill-label">Total Duration</span>
+                <span class="pill-val" id="hero-duration">7h 48m</span>
+              </div>
+              <div class="metric-pill">
+                <span class="pill-label">Sleep Efficiency</span>
+                <span class="pill-val" id="hero-efficiency">94%</span>
+              </div>
+              <div class="metric-pill">
+                <span class="pill-label">Sleep Latency</span>
+                <span class="pill-val" id="hero-latency">11 mins</span>
+              </div>
+              <div class="metric-pill">
+                <span class="pill-label">Circadian Sync</span>
+                <span class="pill-val" id="hero-consistency">92%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Circular Score Radial Gauge -->
+          <div class="hero-score-wrapper">
+            <div class="radial-gauge">
+              <svg class="gauge-svg" viewBox="0 0 160 160">
+                <defs>
+                  <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#818cf8"/>
+                    <stop offset="50%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#34d399"/>
+                  </linearGradient>
+                </defs>
+                <circle class="gauge-bg" cx="80" cy="80" r="68"></circle>
+                <circle class="gauge-fill" id="gauge-fill-circle" cx="80" cy="80" r="68" style="stroke-dashoffset: 60;"></circle>
+              </svg>
+              <div class="gauge-content">
+                <span class="score-number" id="dash-score-num">88</span>
+                <span class="score-denom">/ 100</span>
+                <span class="score-tag">SLEEP SCORE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hypnogram Stage Visualizer -->
+        <div class="card glass-panel hypnogram-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2 class="card-title">Sleep Architecture (Hypnogram)</h2>
+              <span class="card-subtitle">Last Night: 11:15 PM – 07:03 AM</span>
+            </div>
+            <div class="stage-legend">
+              <span class="legend-item"><span class="dot dot-awake"></span> Awake (5%)</span>
+              <span class="legend-item"><span class="dot dot-rem"></span> REM (25%)</span>
+              <span class="legend-item"><span class="dot dot-light"></span> Light (48%)</span>
+              <span class="legend-item"><span class="dot dot-deep"></span> Deep Sleep (22%)</span>
+            </div>
+          </div>
+          <div class="hypnogram-canvas-container">
+            <canvas id="hypnogramCanvas" height="220"></canvas>
+            <div id="hypnogram-tooltip" class="chart-tooltip"></div>
+          </div>
+          <div class="stages-progress-bar">
+            <div class="bar-segment bar-awake" style="width: 5%" title="Awake: 23m (5%)"></div>
+            <div class="bar-segment bar-light" style="width: 48%" title="Light: 3h 45m (48%)"></div>
+            <div class="bar-segment bar-deep" style="width: 22%" title="Deep: 1h 43m (22%)"></div>
+            <div class="bar-segment bar-rem" style="width: 25%" title="REM: 1h 57m (25%)"></div>
+          </div>
+        </div>
+
+        <!-- Biometrics & Vitals Grid -->
+        <div class="section-heading">
+          <h3>Physiological Biometrics & Bedroom Environment</h3>
+          <span class="update-pulse">Live from Java Core</span>
+        </div>
+
+        <div class="biometrics-grid">
+          <!-- Card 1: RHR -->
+          <div class="bio-card glass-panel">
+            <div class="bio-icon rhr-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <div class="bio-details">
+              <span class="bio-label">Resting Heart Rate</span>
+              <div class="bio-val-group">
+                <span class="bio-value" id="bio-rhr">54</span>
+                <span class="bio-unit">bpm</span>
+              </div>
+              <span class="bio-status good">Optimal low (-3 bpm vs avg)</span>
+            </div>
+          </div>
+
+          <!-- Card 2: HRV -->
+          <div class="bio-card glass-panel">
+            <div class="bio-icon hrv-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </div>
+            <div class="bio-details">
+              <span class="bio-label">Heart Rate Variability (HRV)</span>
+              <div class="bio-val-group">
+                <span class="bio-value" id="bio-hrv">68</span>
+                <span class="bio-unit">ms</span>
+              </div>
+              <span class="bio-status good">High Parasympathetic Tone</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Respiration -->
+          <div class="bio-card glass-panel">
+            <div class="bio-icon resp-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"></path></svg>
+            </div>
+            <div class="bio-details">
+              <span class="bio-label">Respiratory Rate</span>
+              <div class="bio-val-group">
+                <span class="bio-value" id="bio-resp">13.8</span>
+                <span class="bio-unit">rpm</span>
+              </div>
+              <span class="bio-status good">Stable breathing pattern</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Blood Oxygen -->
+          <div class="bio-card glass-panel">
+            <div class="bio-icon spo2-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m10 15 5-3-5-3v6Z"></path></svg>
+            </div>
+            <div class="bio-details">
+              <span class="bio-label">Blood Oxygen (SpO2)</span>
+              <div class="bio-val-group">
+                <span class="bio-value" id="bio-spo2">98.4</span>
+                <span class="bio-unit">%</span>
+              </div>
+              <span class="bio-status good">Zero apnea events</span>
+            </div>
+          </div>
+
+          <!-- Card 5: Temperature -->
+          <div class="bio-card glass-panel">
+            <div class="bio-icon temp-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+            </div>
+            <div class="bio-details">
+              <span class="bio-label">Skin Temperature</span>
+              <div class="bio-val-group">
+                <span class="bio-value" id="bio-temp">-0.3</span>
+                <span class="bio-unit">°C dev</span>
+              </div>
+              <span class="bio-status good">Healthy cooling curve</span>
+            </div>
+          </div>
+
+          <!-- Card 6: Ambient Noise -->
+          <div class="bio-card glass-panel">
+            <div class="bio-icon noise-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </div>
+            <div class="bio-details">
+              <span class="bio-label">Bedroom Acoustic Noise</span>
+              <div class="bio-val-group">
+                <span class="bio-value" id="bio-noise">28</span>
+                <span class="bio-unit">dB</span>
+              </div>
+              <span class="bio-status good">Whisper quiet sanctuary</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-Day Trend Chart & AI Insights row -->
+        <div class="dashboard-bottom-grid">
+          <div class="card glass-panel">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">7-Day Recovery Trajectory</h3>
+                <span class="card-subtitle">Consistency & Sleep Quality</span>
+              </div>
+              <span class="badge-tag">Avg: 85.4</span>
+            </div>
+            <div class="trends-chart-wrapper">
+              <canvas id="trendChartCanvas" height="180"></canvas>
+            </div>
+          </div>
+
+          <div class="card glass-panel">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Smart Sleep Coach</h3>
+                <span class="card-subtitle">Algorithmic Recommendations</span>
+              </div>
+              <span class="sparkle-badge">AI Active</span>
+            </div>
+            <div class="insights-list" id="dashboard-insights-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 2: 90-MINUTE SLEEP CYCLE CALCULATOR -->
+      <!-- =================================================================== -->
+      <section id="section-calculator" class="tab-section">
+        <div class="calculator-hero glass-panel">
+          <div class="calc-header-info">
+            <span class="hero-badge">🧬 Ultradian Sleep Science</span>
+            <h2>90-Minute Sleep Cycle Optimizer</h2>
+            <p>
+              Human sleep naturally cycles through NREM and REM stages every 90 minutes.
+              Waking up mid-cycle triggers <em>sleep inertia</em> (grogginess and brain fog), while waking at the end of a cycle leaves you feeling energized, refreshed, and clear-headed.
+            </p>
+          </div>
+
+          <div class="calc-box glass-panel">
+            <div class="calc-mode-switch">
+              <button class="mode-btn active" id="btn-calc-wake" data-mode="wake">
+                I need to wake up at...
+              </button>
+              <button class="mode-btn" id="btn-calc-sleep" data-mode="sleep">
+                If I go to sleep at...
+              </button>
+            </div>
+
+            <div class="calc-input-row">
+              <div class="time-input-container">
+                <label for="calc-time-input" id="calc-time-label">Target Wake Time:</label>
+                <div class="time-field-wrap">
+                  <input type="time" id="calc-time-input" value="07:00" class="time-input">
+                  <span class="time-hint">(Includes standard 14 min sleep latency)</span>
+                </div>
+              </div>
+              <button class="primary-btn" id="btn-run-calculate">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Calculate Cycles
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-results-section">
+          <div class="results-header">
+            <h3 id="calc-results-heading">Suggested Bedtimes (to wake refreshed at 07:00 AM)</h3>
+            <p class="results-sub">Choose a schedule matching your target sleep duration:</p>
+          </div>
+
+          <div class="cycle-cards-grid" id="cycle-cards-container">
+            <!-- Dynamic cycle cards inserted here -->
+          </div>
+
+          <div class="calc-info-card glass-panel">
+            <h4>💡 Why 90-Minute Cycles Matter</h4>
+            <div class="info-columns">
+              <div class="info-col">
+                <strong>Stage 1-2 (Light Sleep):</strong>
+                <p>Muscle relaxation, heart rate drop, memory consolidation setup.</p>
+              </div>
+              <div class="info-col">
+                <strong>Stage 3 (Slow-Wave Deep Sleep):</strong>
+                <p>Human Growth Hormone release, cellular repair, spinal glymphatic toxin flushing.</p>
+              </div>
+              <div class="info-col">
+                <strong>Stage 4 (REM Sleep):</strong>
+                <p>Vivid dreams, emotional processing, neuroplastic learning synthesis.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 3: SOUNDSCAPES & BINAURAL AUDIO -->
+      <!-- =================================================================== -->
+      <section id="section-soundscapes" class="tab-section">
+        <div class="sound-hero glass-panel">
+          <div class="sound-hero-info">
+            <span class="hero-badge">🎧 Neuro-Acoustic Audio</span>
+            <h2>Real-Time Synthesized Soundscapes</h2>
+            <p>
+              Generated directly in your browser using high-precision Web Audio oscillators and pink noise filtration. No streaming lag, pure continuous acoustic frequencies.
+            </p>
+          </div>
+          
+          <div class="sound-master-panel glass-panel">
+            <div class="sound-status-display">
+              <div class="sound-visualizer" id="sound-visualizer-bars">
+                <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+                <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+                <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+                <div class="viz-bar"></div><div class="viz-bar"></div><div class="viz-bar"></div>
+              </div>
+              <div class="sound-now-playing">
+                <span class="now-label">Active Acoustic Mode:</span>
+                <span class="now-title" id="now-playing-title">Ready to Play</span>
+              </div>
+            </div>
+
+            <div class="sound-master-controls">
+              <button class="sound-play-master-btn" id="btn-master-play">
+                <svg id="play-icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span id="play-btn-text">Play Audio</span>
+              </button>
+
+              <div class="volume-slider-group">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <input type="range" id="sound-volume" min="0" max="100" value="45" class="range-slider">
+                <span id="volume-val-label" class="slider-val">45%</span>
+              </div>
+
+              <div class="timer-selector-group">
+                <label for="sleep-timer-select">Sleep Timer:</label>
+                <select id="sleep-timer-select" class="styled-select">
+                  <option value="0">Continuous</option>
+                  <option value="15">15 Minutes</option>
+                  <option value="30">30 Minutes</option>
+                  <option value="45">45 Minutes</option>
+                  <option value="60">60 Minutes</option>
+                  <option value="90">90 Min (1 Cycle)</option>
+                </select>
+                <span id="timer-countdown" class="timer-countdown-tag hidden">00:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="soundscape-cards-grid">
+          <!-- Sound Card 1: Delta Waves -->
+          <div class="sound-card glass-panel active" data-sound="delta">
+            <div class="sound-card-top">
+              <div class="sound-icon-box delta-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h5l3 8 4-16 3 8h5"></path></svg>
+              </div>
+              <span class="frequency-tag">4 Hz Delta</span>
+            </div>
+            <h3>Delta Wave Entrainment</h3>
+            <p>Binaural stereo frequencies tuned to 4Hz Delta rhythm, inducing deep cortical synchronization and rapid transition to slow-wave sleep.</p>
+            <div class="sound-card-footer">
+              <span class="recommend-tag">Recommended for Insomnia</span>
+              <button class="sound-select-btn" data-sound="delta">Selected</button>
+            </div>
+          </div>
+
+          <!-- Sound Card 2: Deep Pink Noise -->
+          <div class="sound-card glass-panel" data-sound="pink">
+            <div class="sound-card-top">
+              <div class="sound-icon-box pink-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+              </div>
+              <span class="frequency-tag">1/f Slope</span>
+            </div>
+            <h3>Deep Pink Noise</h3>
+            <p>Balanced acoustic energy with equal power per octave. Clinically proven to stabilize brain waves and prolong deep sleep stages.</p>
+            <div class="sound-card-footer">
+              <span class="recommend-tag">Deep Sleep Booster</span>
+              <button class="sound-select-btn" data-sound="pink">Select</button>
+            </div>
+          </div>
+
+          <!-- Sound Card 3: Midnight Rain -->
+          <div class="sound-card glass-panel" data-sound="rain">
+            <div class="sound-card-top">
+              <div class="sound-icon-box rain-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg>
+              </div>
+              <span class="frequency-tag">Hydro-Acoustic</span>
+            </div>
+            <h3>Gentle Midnight Rain</h3>
+            <p>Organic rainfall sound with soft stochastic droplets and distant atmospheric rumble. Lowers sympathetic stress response.</p>
+            <div class="sound-card-footer">
+              <span class="recommend-tag">Stress Relief</span>
+              <button class="sound-select-btn" data-sound="rain">Select</button>
+            </div>
+          </div>
+
+          <!-- Sound Card 4: Ocean Swells -->
+          <div class="sound-card glass-panel" data-sound="ocean">
+            <div class="sound-card-top">
+              <div class="sound-icon-box ocean-accent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path></svg>
+              </div>
+              <span class="frequency-tag">Circadian Rhythms</span>
+            </div>
+            <h3>Tidal Ocean Waves</h3>
+            <p>Slow 8-second wave ebb and flow matching ideal resting respiratory rates to naturally guide meditative breathing patterns.</p>
+            <div class="sound-card-footer">
+              <span class="recommend-tag">Breath Synchronization</span>
+              <button class="sound-select-btn" data-sound="ocean">Select</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 4: BEDROOM IoT ENVIRONMENT -->
+      <!-- =================================================================== -->
+      <section id="section-environment" class="tab-section">
+        <div class="environment-grid">
+          <!-- Left Column: Ambient Simulation Controls -->
+          <div class="env-controls-card glass-panel">
+            <div class="card-header">
+              <div>
+                <span class="hero-badge">🎛️ Smart Bedroom IoT Hub</span>
+                <h2 class="card-title">Sanctuary Climate & Lighting</h2>
+              </div>
+              <span class="iot-synced-tag">Connected via Java REST</span>
+            </div>
+
+            <!-- Temperature Slider -->
+            <div class="env-control-group">
+              <div class="control-header">
+                <div class="control-label-wrap">
+                  <svg class="control-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+                  <span>Target Room Temperature</span>
+                </div>
+                <div class="val-display">
+                  <span id="env-temp-c">19.0°C</span>
+                  <span class="val-sub" id="env-temp-f">(66.2°F)</span>
+                </div>
+              </div>
+              <input type="range" id="slider-temp" min="15.0" max="24.0" step="0.5" value="19.0" class="range-slider temp-slider">
+              <div class="slider-scale">
+                <span>15°C (Chilly)</span>
+                <span class="optimal-marker">18.5-19.5°C Optimal</span>
+                <span>24°C (Warm)</span>
+              </div>
+            </div>
+
+            <!-- Circadian Lighting Presets -->
+            <div class="env-control-group">
+              <div class="control-header">
+                <div class="control-label-wrap">
+                  <svg class="control-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                  <span>Circadian Lighting Spectrum</span>
+                </div>
+                <span class="light-kelvin" id="light-kelvin-label">1800K (Sunset Amber)</span>
+              </div>
+              <div class="light-preset-buttons">
+                <button class="light-btn" data-light="daylight" data-k="5000K Daylight">
+                  <span class="light-preview preview-daylight"></span>
+                  <span>Daylight</span>
+                </button>
+                <button class="light-btn active" data-light="sunset-amber" data-k="1800K Sunset Amber">
+                  <span class="light-preview preview-sunset"></span>
+                  <span>Sunset Amber</span>
+                </button>
+                <button class="light-btn" data-light="deep-red" data-k="650nm Zero-Melatonin Red">
+                  <span class="light-preview preview-red"></span>
+                  <span>Deep Red</span>
+                </button>
+                <button class="light-btn" data-light="blackout" data-k="0 Lux Total Darkness">
+                  <span class="light-preview preview-blackout"></span>
+                  <span>Blackout</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Smart Wake Window -->
+            <div class="env-control-group">
+              <div class="control-header">
+                <div class="control-label-wrap">
+                  <svg class="control-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M5 3 2 6"></path><path d="m22 6-3-3"></path><path d="M6.38 18.7 4 21"></path><path d="M17.64 18.67 20 21"></path></svg>
+                  <span>Smart Circadian Wake Window</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="chk-smart-alarm" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <p class="control-desc">
+                Gradually brings room temperature up and simulates dawn twilight 20 minutes before waking you only during Light sleep stages to eliminate alarm shock.
+              </p>
+            </div>
+
+            <button class="primary-btn full-width" id="btn-save-env">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              Apply Settings to Smart Bedroom
+            </button>
+          </div>
+
+          <!-- Right Column: Visual Bedroom Preview -->
+          <div class="env-preview-card glass-panel">
+            <div class="preview-header">
+              <h3>Live Bedroom State Simulation</h3>
+              <span class="status-indicator live">Telemetry Synchronized</span>
+            </div>
+            
+            <div class="room-visualizer" id="room-visualizer-box">
+              <div class="room-ambient-glow" id="room-glow"></div>
+              <div class="room-illustration">
+                <!-- Bed illustration in SVG -->
+                <svg viewBox="0 0 300 200" class="room-svg">
+                  <!-- Headboard -->
+                  <rect x="50" y="50" width="200" height="20" rx="4" fill="#334155" />
+                  <!-- Mattress Base -->
+                  <rect x="60" y="70" width="180" height="90" rx="8" fill="#1e293b" />
+                  <!-- Duvet / Blanket -->
+                  <rect x="65" y="95" width="170" height="60" rx="6" fill="#475569" id="room-duvet" />
+                  <!-- Pillows -->
+                  <rect x="75" y="75" width="65" height="22" rx="4" fill="#94a3b8" />
+                  <rect x="160" y="75" width="65" height="22" rx="4" fill="#94a3b8" />
+                  <!-- Nightstand Left with Lamp -->
+                  <rect x="25" y="85" width="25" height="40" rx="2" fill="#1e293b" />
+                  <circle cx="37" cy="80" r="8" fill="#f59e0b" id="lamp-left-bulb" />
+                  <!-- Nightstand Right with Lamp -->
+                  <rect x="250" y="85" width="25" height="40" rx="2" fill="#1e293b" />
+                  <circle cx="262" cy="80" r="8" fill="#f59e0b" id="lamp-right-bulb" />
+                </svg>
+              </div>
+              <div class="room-overlay-telemetry">
+                <div class="telemetry-item">
+                  <span class="t-label">Current Air Temp</span>
+                  <span class="t-val" id="telemetry-temp">19.0°C</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="t-label">Lux Illuminance</span>
+                  <span class="t-val" id="telemetry-lux">12 Lux</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="t-label">CO2 Air Purity</span>
+                  <span class="t-val">420 ppm (Clean)</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="t-label">Noise Floor</span>
+                  <span class="t-val">28 dB</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="iot-device-status-list">
+              <div class="device-row">
+                <span class="device-dot online"></span>
+                <span class="device-name">Smart Climate HVAC</span>
+                <span class="device-state" id="dev-hvac-state">Cooling to 19.0°C</span>
+              </div>
+              <div class="device-row">
+                <span class="device-dot online"></span>
+                <span class="device-name">Circadian Smart Bulbs</span>
+                <span class="device-state" id="dev-light-state">Sunset Amber (25%)</span>
+              </div>
+              <div class="device-row">
+                <span class="device-dot online"></span>
+                <span class="device-name">Sleep Sound Machine</span>
+                <span class="device-state" id="dev-sound-state">Delta Waves Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 5: 24-HOUR CIRCADIAN CLOCK -->
+      <!-- =================================================================== -->
+      <section id="section-circadian" class="tab-section">
+        <div class="circadian-header glass-panel">
+          <div>
+            <span class="hero-badge">☀️ Master Suprachiasmatic Nucleus (SCN)</span>
+            <h2>Your 24-Hour Biological Rhythms</h2>
+            <p>
+              Your body's circadian clock coordinates temperature, cortisol, melatonin, and digestion. Aligning your daily habits with these natural bio-gates maximizes recovery and daytime alertness.
+            </p>
+          </div>
+          <div class="circadian-current-time">
+            <span class="time-label">Current Clock Time</span>
+            <span class="clock-display" id="circadian-live-clock">--:--:--</span>
+          </div>
+        </div>
+
+        <div class="circadian-grid">
+          <!-- Circular Clock Visualization -->
+          <div class="card glass-panel circadian-wheel-card">
+            <h3 class="card-title">Circadian Clock Wheel</h3>
+            <div class="wheel-container">
+              <canvas id="circadianCanvas" width="340" height="340"></canvas>
+            </div>
+          </div>
+
+          <!-- Circadian Milestones -->
+          <div class="card glass-panel circadian-timeline-card">
+            <h3 class="card-title">Daily Chronobiology Milestones</h3>
+            <div class="milestones-timeline" id="milestones-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 6: SLEEP JOURNAL & HISTORY -->
+      <!-- =================================================================== -->
+      <section id="section-journal" class="tab-section">
+        <div class="journal-hero glass-panel">
+          <div>
+            <span class="hero-badge">📖 Sleep Journal & Notes</span>
+            <h2>Personal Sleep History & Habit Correlation</h2>
+            <p>
+              Track subjective sleep quality, dream vividness, caffeine timing, and pre-bed habits to reveal patterns affecting your recovery score.
+            </p>
+          </div>
+          <button class="primary-btn" id="btn-open-log-modal">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add New Entry
+          </button>
+        </div>
+
+        <div class="journal-list-container" id="journal-entries-container">
+          <!-- Rendered from Java backend REST API -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <span class="footer-brand">SmartSleep Core</span>
+          <span class="footer-ver">Java 21 Edition • Built-in Multi-threaded HTTP Server</span>
+        </div>
+        <div class="footer-right">
+          <span>Local REST API: <code>http://localhost:8080/api/</code></span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: LOG SLEEP SESSION -->
+  <!-- ===================================================================== -->
+  <div class="modal-backdrop hidden" id="log-sleep-modal">
+    <div class="modal-dialog glass-panel">
+      <div class="modal-header">
+        <h3 class="modal-title">Log Sleep Session</h3>
+        <button class="modal-close-btn" id="btn-close-modal">&times;</button>
+      </div>
+      <form id="form-log-sleep" class="modal-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="log-date">Date:</label>
+            <input type="text" id="log-date" class="form-input" value="Today">
+          </div>
+          <div class="form-group">
+            <label for="log-duration">Total Hours Slept:</label>
+            <input type="number" id="log-duration" class="form-input" min="3.0" max="14.0" step="0.1" value="7.5">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="log-score">Recovery Score (0-100):</label>
+            <input type="number" id="log-score" class="form-input" min="40" max="100" value="86">
+          </div>
+          <div class="form-group">
+            <label for="log-quality">Perceived Quality:</label>
+            <select id="log-quality" class="styled-select form-input">
+              <option value="Excellent">Excellent (Refreshed)</option>
+              <option value="Good" selected>Good (Energized)</option>
+              <option value="Fair">Fair (Mild grogginess)</option>
+              <option value="Poor">Poor (Exhausted)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="log-notes">Evening Notes & Habits:</label>
+          <textarea id="log-notes" rows="3" class="form-input" placeholder="e.g., Read for 20 mins, used binaural audio, zero screen time after 10 PM."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="action-btn" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="primary-btn">Save to Java Backend</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
